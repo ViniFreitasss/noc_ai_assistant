@@ -15,18 +15,20 @@ const getVoices = () => {
     console.log(voices)
 
     // loop through voices and create an option for each one
+    voiceSelect.innerHTML = ''; // Clear the select element before adding options
 
     voices.forEach(voice => {
         // create option element
         const option = document.createElement('option')
         // fill option with voice end language
-        option.textContent = voice.name + '(' + voice.lang + ')'
+        option.textContent = `${voice.name} (${voice.lang})`
         // set need option attributes
         option.setAttribute('data-lang', voice.lang)
         option.setAttribute('data-name', voice.name)
         voiceSelect.appendChild(option)
     })
 }
+
 getVoices()
 if (synth.onvoiceschanged !== undefined) {
     synth.onvoiceschanged = getVoices
@@ -61,12 +63,15 @@ const speak = () => {
                 speakText.voice = voice
             }
         })
+
+        // speak the text
+        synth.speak(speakText)
     }
 }
+
 // event listeners
 
-//text form submit 
-
+// text form submit 
 textForm.addEventListener('submit', e => {
     e.preventDefault()
     speak()
@@ -74,4 +79,3 @@ textForm.addEventListener('submit', e => {
 })
 
 voiceSelect.addEventListener('change', e => speak())
-
